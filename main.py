@@ -3,6 +3,20 @@ from functools import reduce
 from itertools import *
 import time
 
+# List comprehention
+#  [<expression> for <item> in <iterable> (if <condition>)]
+listCom = [x for x in range(-1, 3)]
+print (listCom)
+# Set comprehention
+#  {<expression> for <item> in <iterable> (if <condition>)}
+even_numbers_set = {x for x in range(21) if x % 2 == 0}
+print(even_numbers_set)
+# Dict comprehension
+#  {<key_expression>: <value_expression> for <item> in <iterable> (if <condition>)}
+squares_dict = {x: x**2 for x in range(10)}
+print(squares_dict)
+
+
 # Anonymus function: It is also lambda like in the Haskell
 x = [1,2,3,4]
 y = [5,6,7]
@@ -27,16 +41,15 @@ print(curried_add(3, 2)(3))  # Outputs: 6
 print(curried_add(3)(2, 3))  # Outputs: 6
 
 # Function composition
-def compose(f, g):
-   return lambda x: f(g(x))
-
 def f(x):
-   return x + 2
+    return x + 2
 
 def g(x):
-   return x + 3
+    return x * 3
 
-h = compose(f, g)
+def h(x):
+    return f(g(x))
+
 print(h(4))
 
 # Apply to all: map function the same as map in Haskell
