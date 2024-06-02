@@ -16,13 +16,88 @@ print(even_numbers_set)
 squares_dict = {x: x**2 for x in range(10)}
 print(squares_dict)
 
+print("------------------------------------------------")
+# all(<iterable>) function:the all() function is a built-in function 
+#  that returns True if all elements of an iterable are true
+#  (or if the iterable is empty), and False otherwise.
+my_tuple = (True, False, True)
+result = all(my_tuple)
+print(result)  # Output: False
 
+def custom_all(iterable):
+   for element in iterable:
+      if not element:
+         return False
+   return True
+
+print(custom_all([True, False, True]))
+
+print("------------------------------------------------")
+# any(<iterable>) function: returns True if at least one element of an iterable
+#  is true (or if the iterable is not empty), and False otherwise
+my_set = {False, False, False, True}
+result = any(my_set)
+print(result)
+
+def my_any(iterable):
+   for element in iterable:
+      if element:
+         return True
+   return False
+
+print(my_any([False, False, True, False]))  
+
+print("------------------------------------------------")
+# zip(*<iterable>) :takes multiple iterables as arguments 
+#  and returns an iterator of tuples where the i-th tuple 
+#  contains the i-th element from each of the input iterables. 
+#  If the input iterables are of different lengths, the resulting iterator will 
+#  have the length of the shortest iterable.
+list1 = [1, 2, 3]
+list2 = ['a', 'b']
+zipped = zip(list1, list2)
+print(list(zipped)) 
+
+def custom_zip(*iterables):
+   min_length = min(len(iterable) for iterable in iterables)
+
+   for i in range(min_length):
+      yield tuple(iterable[i] for iterable in iterables)
+
+list1 = [1, 2, 3]
+list2 = ['a', 'b']
+zipped = custom_zip(list1, list2)
+print(list(zipped))
+
+print("------------------------------------------------")
+# zip_longest(*<iterables>, (<fillvalue=None>)): available in the itertools module 
+#  and is used to zip together multiple iterables of potentially unequal lengths. 
+#  Unlike the built-in zip() function, zip_longest() continues iterating 
+#  until the longest iterable is exhausted, filling in missing values 
+#  with a specified fill value (default is None).
+list1 = [1, 2, 3]
+list2 = ['a', 'b']
+zipped = zip_longest(list1, list2)
+print(list(zipped))
+
+def custom_zip_longest(*iterables, fillvalue=None):
+   for i in range(max(len(iterable) for iterable in iterables)):
+      yield tuple(iterable[i] if i < len(iterable) 
+                              else fillvalue for iterable in iterables)
+      
+list1 = [1, 2, 3]
+list2 = ['a', 'b']
+zipped = custom_zip_longest(list1, list2)
+print(list(zipped))
+
+print("------------------------------------------------")
 # Anonymus function: It is also lambda like in the Haskell
 x = [1,2,3,4]
 y = [5,6,7]
 x1 = x + y
 print(list(map(lambda x: x*x, x)))
 
+print("------------------------------------------------")
 # -------------------------------------------------
 # Curried function
 def curry(f):
@@ -36,22 +111,24 @@ def multi(x, y, z):
     return x * y * z
 
 curried_add = curry(multi)
-print(curried_add(3)(2)(3))  # Outputs: 6
-print(curried_add(3, 2)(3))  # Outputs: 6
-print(curried_add(3)(2, 3))  # Outputs: 6
+print(curried_add(3)(2)(3)) # Output = 18
+print(curried_add(3, 2)(3)) # Output = 18 
+print(curried_add(3)(2, 3)) # Output = 18 
 
+print("------------------------------------------------")
 # Function composition
 def f(x):
-    return x + 2
+   return x + 2
 
 def g(x):
-    return x * 3
+   return x * 3
 
 def h(x):
-    return f(g(x))
+   return f(g(x))
 
-print(h(4))
+print(h(4)) # Output = 14
 
+print("------------------------------------------------")
 # Apply to all: map function the same as map in Haskell
 list1 = [1,2,3,4,5]
 list2 = [5,6,7]
@@ -74,6 +151,7 @@ multi_numbers = list(custom_map(multi, list1, list2))
 
 print(multi_numbers)  # Output: [5, 12, 21]
 
+print("------------------------------------------------")
 # Filter: the same as Filter in Haskell
 listFilter = [1,2,3,4,5,6,7,8,9,10]
 
@@ -89,6 +167,7 @@ def custom_filter(func, iterable):
 
 print(list(custom_filter(is_even, listFilter)))  
 
+print("------------------------------------------------")
 # Insert left/Insert right: Fold left in Haskell
 listFoldLeftRight = [1,2,3,4]
 
@@ -130,6 +209,7 @@ lst = "abc"
 result = fold_left(lambda acc, x: acc + x, "o", lst)  # Concatenate strings
 print(result)
 
+print("------------------------------------------------")
 # Function as parameter in Python function is treat like other values
 #   Assigned to a variable
 def foo(a, b):
@@ -153,6 +233,7 @@ def f(x):
 expFuncVal = f(3)
 print(expFuncVal(4))
 
+print("------------------------------------------------")
 # Closure = function + bìding ò iits free vriables
 def make_power_function(power):
    def powwer_function(x):
@@ -165,6 +246,7 @@ expCube = make_power_function(3)
 print("Example closure square:", expSquare(4))
 print("Example closure cube:", expCube(4))
 
+print("------------------------------------------------")
 # Decorator: A decorator in Python is a design pattern that allows you to add 
 # new functionality to an existing object without modifying its structure. 
 # Decorators are very useful for implementing 
@@ -190,18 +272,18 @@ result1 = add(3, 5)
 result2 = multiply(4, 7)
 
 def timing(func):
-    def wrapper(*args, **kwargs):
-        start_time = time.time()
-        result = func(*args, **kwargs)
-        end_time = time.time()
-        print(f"Function {func.__name__} took {end_time - start_time} seconds")
-        return result
-    return wrapper
+   def wrapper(*args, **kwargs):
+      start_time = time.time()
+      result = func(*args, **kwargs)
+      end_time = time.time()
+      print(f"Function {func.__name__} took {end_time - start_time} seconds")
+      return result
+   return wrapper
 
 @timing
 def slow_function():
-    time.sleep(2)
-    return "Finished"
+   time.sleep(2)
+   return "Finished"
 
 
 
